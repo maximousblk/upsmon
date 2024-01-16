@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push: { branches: [main] }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@v2
+
+      - name: Build
+        run: zig build -Doptimize=ReleaseSafe -Dtarget=aarch64-linux-gnu --summary all
+
+      - name: Archive
+        run: |
+          mkdir -p ./upsmon-aaarch64-linux-gnu
+          cp ./zig-out/bin/upsmon ./upsmon-aaarch64-linux-gnu
+          cp ./README.md ./upsmon-aaarch64-linux-gnu
+          cp ./LICENSE ./upsmon-aaarch64-linux-gnu
+          tar -czvf upsmon-aaarch64-linux-gnu.tar.gz upsmon-aaarch64-linux-gnu
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: canary
+          name: Canary build
+          makeLatest: true
+          prerelease: false
+          allowUpdates: true
+          replacesArtifacts: true
+          omitBody: true
+          artifacts: "upsmon-aaarch64-linux-gnu.tar.gz"
+          token: ${{ secrets.GITHUB_TOKEN }}
