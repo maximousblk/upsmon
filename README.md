@@ -4,7 +4,7 @@ A simple UPS monitor for [UPS HAT (B) for Raspberry Pi](https://www.waveshare.co
 
 ## Installation
 
-You can download the latest release from the [releases page](https://github.com/maximousblk/upsmon/releases) or build it yourself:tm:.
+You can download the latest release from the [releases page](https://github.com/maximousblk/upsmon/releases) or build it yourself™️.
 
 ### Requirements
 
